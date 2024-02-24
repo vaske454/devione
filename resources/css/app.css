@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* Word Input component */
+    .word-input-container {
+        @apply mt-8 max-w-md mx-auto
+    }
+
+    .word-input-form {
+        @apply flex items-center border-b border-b-2 border-teal-500 py-2
+    }
+
+    .word-input-field {
+        @apply appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none
+    }
+
+    .word-input-submit {
+        @apply flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded
+    }
+
+    /* Welcome Page */
+    .welcome-container {
+        @apply mt-8 max-w-md mx-auto text-center
+    }
+
+    .welcome-title {
+        @apply text-3xl font-bold mb-4
+    }
+}
