@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'dictionary_api' => [
+        'url' => env('DICTIONARY_API_URL', 'https://api.dictionaryapi.dev/api/v2/entries/en'),
+    ],
+
 ];

@@ -2,24 +2,16 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
-
-class WordGameService
+class WordScorerService
 {
-    protected string $apiUrl = 'https://api.dictionaryapi.dev/api/v2/entries/en';
-
     /**
-     * Check if the given word is valid and calculate its score.
+     * Calculate the score for the given word.
      *
      * @param string $word
      * @return int
      */
     public function calculateScore(string $word): int
     {
-        if (!$this->isValidWord($word)) {
-            return 0;
-        }
-
         $score = $this->calculateUniqueLetterScore($word);
 
         if ($this->isPalindrome($word)) {
@@ -31,18 +23,6 @@ class WordGameService
         }
 
         return $score;
-    }
-
-    /**
-     * Check if the word exists in the English dictionary.
-     *
-     * @param string $word
-     * @return bool
-     */
-    private function isValidWord(string $word): bool
-    {
-        $response = Http::get("$this->apiUrl/$word");
-        return $response->successful();
     }
 
     /**

@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\WordGameService;
+use App\Services\WordValidatorService;
+use App\Services\WordScorerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class WordGameController extends Controller
 {
-    protected WordGameService $wordGameService;
+    protected WordValidatorService $wordValidatorService;
+    protected WordScorerService $wordScorerService;
 
-    public function __construct(WordGameService $wordGameService)
+    public function __construct(WordValidatorService $wordValidatorService, WordScorerService $wordScorerService)
     {
-        $this->wordGameService = $wordGameService;
+        $this->wordValidatorService = $wordValidatorService;
+        $this->wordScorerService = $wordScorerService;
     }
 
     /**
@@ -30,8 +33,13 @@ class WordGameController extends Controller
             'word' => 'required|string'
         ]);
 
+        // Check if the word is valid
+        if (!$this->wordValidatorService->isValidWord($word)) {
+            return response()->json(['error' => 'Invalid word'], 422);
+        }
+
         // Calculate score
-        $score = $this->wordGameService->calculateScore($word);
+        $score = $this->wordScorerService->calculateScore($word);
 
         return response()->json(['score' => $score]);
     }

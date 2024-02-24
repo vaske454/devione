@@ -4,6 +4,7 @@ import axios from 'axios';
 const WordInput = () => {
     const [word, setWord] = useState('');
     const [score, setScore] = useState(null);
+    const [error, setError] = useState(null);
 
     const handleChange = (event) => {
         setWord(event.target.value);
@@ -15,8 +16,11 @@ const WordInput = () => {
         try {
             const response = await axios.post('/api/check-word', { word });
             setScore(response.data.score);
+            setError(null); // Reset error state
         } catch (error) {
             console.error('Error:', error);
+            setError('The entered word is not a valid English word'); // Set error message
+            setScore(null); // Reset score state
         }
     }
 
@@ -32,7 +36,8 @@ const WordInput = () => {
                 />
                 <button type="submit" className="word-input-submit">Submit</button>
             </form>
-            {score !== null && <p>Score: {score}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {!error && score !== null && <p>Score: {score}</p>}
         </div>
     );
 };
