@@ -26,12 +26,18 @@ class WordGameController extends Controller
      */
     public function checkWord(Request $request): JsonResponse
     {
+        // Extract input
         $word = $request->input('word');
 
         // Validate input
         $request->validate([
             'word' => 'required|string'
         ]);
+
+        // Check if the input is a single word
+        if (str_word_count($word) !== 1) {
+            return response()->json(['error' => 'Invalid word. Only one word is allowed.'], 422);
+        }
 
         // Check if the word is valid
         if (!$this->wordValidatorService->isValidWord($word)) {
