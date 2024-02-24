@@ -2,9 +2,19 @@
 
 This is a simple web application for playing a word game. The user can enter a word, and the application will score it based on certain rules.
 
+## Prerequisites
+
+Before getting started, make sure you have the following installed:
+
+- [Docker](https://docs.docker.com/engine/install/)
+- [DDEV](https://ddev.readthedocs.io/en/stable/#installation)
+
 ## Get started
 
-1. Clone this repository on your computer
+1. Clone this repository to your computer by running the following command:
+```
+git clone git@github.com:vaske454/devione.git
+```
 2. Navigate to the project's root directory and initiate it by running
 ```
 ddev start
