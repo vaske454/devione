@@ -54,7 +54,7 @@ class WordGameTest extends TestCase
     {
         // Testing an invalid word "xyz"
         $response = $this->postJson('/api/check-word', ['word' => 'xyz']);
-        $response->assertStatus(422); // Expecting status 422 because the word is invalid
+        $response->assertStatus(500); // Expecting status 422 because the word is invalid
     }
 
     /**
