@@ -53,3 +53,11 @@ To run the application in development mode, use:
 npm run dev
 ```
 This command will start the development server. You can then access the application in your web browser.
+
+## Word Check
+
+The project includes a custom command for checking words according to the game rules. To use this command, run the following command in the terminal:
+
+```bash
+ddev php artisan score:word <word>
+```
