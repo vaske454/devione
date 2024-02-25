@@ -41,6 +41,12 @@ npm install
 
 ## Usage
 
+Before running the application, ensure that DDEV is started by running:
+
+```
+ddev start
+```
+
 To run the application in development mode, use:
 
 ```bash
