@@ -50,7 +50,7 @@ class WordGameTest extends TestCase
     public function testCheckInvalidWord()
     {
         $response = $this->postJson('/api/check-word', ['word' => 'xyz']);
-        $response->assertStatus(500);
+        $response->assertStatus(404);
     }
 
     /**
