@@ -80,7 +80,7 @@ class WordGameController extends Controller
 
             return response()->json($result);
         } catch (InvalidArgumentException $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return response()->json(['error' => $e->getMessage()], $e->getCode());
         }
     }
 
@@ -98,7 +98,7 @@ class WordGameController extends Controller
         try {
             return response()->json($result);
         } catch (InvalidArgumentException $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return response()->json(['error' => $e->getMessage()], $e->getCode());
         }
     }
 }
