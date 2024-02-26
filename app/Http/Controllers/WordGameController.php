@@ -35,6 +35,27 @@ class WordGameController extends Controller
     }
 
     /**
+     * Process the word and return its score.
+     *
+     * @param string $word
+     * @return array
+     * @throws InvalidArgumentException|RequestException
+     */
+    private function processWord(string $word): array
+    {
+        // Validate API URL
+        $this->validateApiUrl();
+
+        // Validate input
+        $this->wordValidatorService->isValidWord($word);
+
+        // Calculate score
+        $score = $this->wordScorerService->calculateScore($word);
+
+        return compact('score');
+    }
+
+    /**
      * Check the word entered by the user and return its score.
      *
      * @param Request $request
@@ -43,9 +64,6 @@ class WordGameController extends Controller
      */
     public function checkWord(Request $request): JsonResponse
     {
-        // Validate API URL
-        $this->validateApiUrl();
-
         // Extract input
         $word = $request->input('word');
 
@@ -56,39 +74,29 @@ class WordGameController extends Controller
             'word.regex' => 'Invalid word'
         ]);
 
-        // Check if the word is valid
-        $this->wordValidatorService->isValidWord($word);
-
         try {
-            // Calculate score
-            $score = $this->wordScorerService->calculateScore($word);
+            // Process the word
+            $result = $this->processWord($word);
 
-            return response()->json(['score' => $score]);
+            return response()->json($result);
         } catch (InvalidArgumentException $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
         }
     }
 
     /**
-     * Check the score for a single word.
+     * Check the score for a single word when the command is run in the terminal.
      *
      * @param string $word
      * @return JsonResponse
-     * @throws RequestException
+     * @throws InvalidArgumentException|RequestException
      */
     public function checkWordCommand(string $word): JsonResponse
     {
-        // Validate API URL
-        $this->validateApiUrl();
-
-        // Validate input
-        $this->wordValidatorService->isValidWord($word);
-
+        // Process the word
+        $result = $this->processWord($word);
         try {
-            // Calculate score
-            $score = $this->wordScorerService->calculateScore($word);
-
-            return response()->json(['score' => $score]);
+            return response()->json($result);
         } catch (InvalidArgumentException $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
         }
