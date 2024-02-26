@@ -93,6 +93,17 @@ class WordGameController extends Controller
      */
     public function checkWordCommand(string $word): JsonResponse
     {
+        // Validate input
+        if (strlen($word) < 2 || strlen($word) > 50) {
+            throw new InvalidArgumentException('Word length must be between 2 and 50 characters.');
+        }
+
+        // Check for special characters
+        if (!preg_match('/^[A-Za-z]+$/', $word)) {
+            throw new InvalidArgumentException('Word must contain only letters.');
+        }
+
+
         // Process the word
         $result = $this->processWord($word);
         try {

@@ -42,13 +42,10 @@ const WordInput = () => {
                     // Get the substring with the title
                     const titleSubstring = errorMessage.substring(titleIndex + 8, messageIndex - 4);
                     setError(titleSubstring);
-                } else {
-                    // If there is no title, set a general error
-                    setError('Unknown error occurred.');
                 }
             } else {
                 // If there is no response or message, set a general error
-                setError('Unknown error occurred.');
+                setError('The requested word does not exist in the dictionary.');
             }
             setScore(null); // Reset score state
         }
