@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Exception;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 class WordValidatorService
@@ -15,19 +15,16 @@ class WordValidatorService
     }
 
     /**
-     * Check if the given word is valid.
+     * Checks if the given word is valid.
      *
      * @param string $word
      * @return bool
-     * @throws Exception
+     * @throws RequestException
      */
     public function isValidWord(string $word): bool
     {
         $response = Http::get("$this->apiUrl/$word");
-        if ($response->successful()) {
-            return $response->successful();
-        } else {
-            throw new Exception('Invalid word.');
-        }
+        $response->throw();
+        return true;
     }
 }

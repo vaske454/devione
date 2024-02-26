@@ -31,9 +31,29 @@ const WordInput = () => {
             setScore(response.data.score);
             setError(null); // Reset error state
         } catch (error) {
-            setError(error.response.data.message);
+            // Check if there is a response and a message
+            if (error.response && error.response.data && error.response.data.message) {
+                // Get the message from the response
+                const errorMessage = error.response.data.message;
+                // Try to extract the title
+                const titleIndex = errorMessage.indexOf('title');
+                const messageIndex = errorMessage.indexOf('message');
+                if (titleIndex !== -1 && messageIndex !== -1) {
+                    // Get the substring with the title
+                    const titleSubstring = errorMessage.substring(titleIndex + 8, messageIndex - 4);
+                    console.log(titleSubstring);
+                    setError(titleSubstring);
+                } else {
+                    // If there is no title, set a general error
+                    setError('Unknown error occurred.');
+                }
+            } else {
+                // If there is no response or message, set a general error
+                setError('Unknown error occurred.');
+            }
             setScore(null); // Reset score state
         }
+
     }
 
     const handlePaste = (event) => {

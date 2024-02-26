@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\ApiUrlValidatorService;
 use App\Services\WordValidatorService;
 use App\Services\WordScorerService;
-use Exception;
+use Illuminate\Http\Client\RequestException;
+use InvalidArgumentException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class WordGameController extends Controller
     /**
      * Validate the API URL.
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     protected function validateApiUrl(): void
     {
@@ -38,7 +39,7 @@ class WordGameController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws Exception
+     * @throws InvalidArgumentException|RequestException
      */
     public function checkWord(Request $request): JsonResponse
     {
@@ -63,8 +64,33 @@ class WordGameController extends Controller
             $score = $this->wordScorerService->calculateScore($word);
 
             return response()->json(['score' => $score]);
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()]);
+        } catch (InvalidArgumentException $e) {
+            return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
+        }
+    }
+
+    /**
+     * Check the score for a single word.
+     *
+     * @param string $word
+     * @return JsonResponse
+     * @throws RequestException
+     */
+    public function checkWordCommand(string $word): JsonResponse
+    {
+        // Validate API URL
+        $this->validateApiUrl();
+
+        // Validate input
+        $this->wordValidatorService->isValidWord($word);
+
+        try {
+            // Calculate score
+            $score = $this->wordScorerService->calculateScore($word);
+
+            return response()->json(['score' => $score]);
+        } catch (InvalidArgumentException $e) {
+            return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
         }
     }
 }
