@@ -41,7 +41,6 @@ const WordInput = () => {
                 if (titleIndex !== -1 && messageIndex !== -1) {
                     // Get the substring with the title
                     const titleSubstring = errorMessage.substring(titleIndex + 8, messageIndex - 4);
-                    console.log(titleSubstring);
                     setError(titleSubstring);
                 } else {
                     // If there is no title, set a general error

@@ -23,8 +23,17 @@ class WordValidatorService
      */
     public function isValidWord(string $word): bool
     {
-        $response = Http::get("$this->apiUrl/$word");
-        $response->throw();
-        return true;
+        try {
+            $response = Http::get("$this->apiUrl/$word");
+            $response->throw();
+            return true;
+        } catch (RequestException $e) {
+            // Handle the exception
+            if ($e->response && $e->response->status() === 404) {
+                throw new \InvalidArgumentException('Invalid word', 404);
+            }
+            // Re-throw the exception if it's not a 404 error
+            throw $e;
+        }
     }
 }
