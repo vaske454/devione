@@ -44,8 +44,14 @@ const WordInput = () => {
                     setError(titleSubstring);
                 }
             } else {
-                // If there is no response or message, set a general error
-                setError('The requested word does not exist in the dictionary.');
+                const errorMessage = error.response.data.error;
+                if (errorMessage) {
+                    setError(errorMessage);
+                } else {
+                    // If there is no response or message, set a general error
+                    setError('The requested word does not exist in the dictionary.');
+                }
+
             }
             setScore(null); // Reset score state
         }
@@ -78,8 +84,8 @@ const WordInput = () => {
                 />
                 <button type="submit" className="word-input-submit">Submit</button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {!error && score !== null && <p>Score: {score}</p>}
+            {error && <span style={{ color: 'red' }}>{error}</span>}
+            {!error && score !== null && <span>Score: {score}</span>}
         </div>
     );
 };
